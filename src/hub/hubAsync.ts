@@ -73,6 +73,8 @@ export class HubAsync extends Hub {
     super(bluetooth);
     validateConfiguration(configuration);
     this.configuration = configuration;
+    // added fix for error: Cannot read properties of undefined (reading 'AB’);
+    this.afterInitialization();
   }
   /**
    * Disconnect Hub
