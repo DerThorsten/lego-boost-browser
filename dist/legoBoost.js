@@ -86,7 +86,7 @@ var LegoBoost = /** @class */ (function () {
     LegoBoost.prototype.connect = function (configuration) {
         if (configuration === void 0) { configuration = {}; }
         return __awaiter(this, void 0, void 0, function () {
-            var bluetooth, e_1;
+            var bluetooth, e_1, errorMessage, extra_error;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -96,11 +96,16 @@ var LegoBoost = /** @class */ (function () {
                     case 1:
                         bluetooth = _a.sent();
                         this.initHub(bluetooth, this.configuration);
-                        return [3 /*break*/, 3];
+                        return [2 /*return*/, undefined];
                     case 2:
                         e_1 = _a.sent();
-                        console.log('Error from connect: ' + e_1);
-                        return [3 /*break*/, 3];
+                        errorMessage = 'Error from connect: ' + e_1;
+                        if (!boostConnector_1.BoostConnector.isWebBluetoothSupported) {
+                            extra_error = "Your device doesn't support Web Bluetooth API. Try to turn on Experimental Platform Features from Chrome, by accessing the following link and turning it on: chrome://flags/#enable-experimental-web-platform-features. Unfortunately, this feature is not supported on iOS devices.";
+                            errorMessage = extra_error;
+                        }
+                        console.log(errorMessage);
+                        return [2 /*return*/, errorMessage];
                     case 3: return [2 /*return*/];
                 }
             });

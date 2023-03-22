@@ -104,6 +104,8 @@ var HubAsync = /** @class */ (function (_super) {
         var _this = _super.call(this, bluetooth) || this;
         validateConfiguration(configuration);
         _this.configuration = configuration;
+        // added fix for error: Cannot read properties of undefined (reading 'AB’);
+        _this.afterInitialization();
         return _this;
     }
     /**

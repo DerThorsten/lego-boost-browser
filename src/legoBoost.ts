@@ -4,7 +4,7 @@ import { HubControl } from './ai/hub-control';
 import { DeviceInfo, ControlData, RawData } from './types';
 
 export default class LegoBoost {
-  private hub: HubAsync;
+  public hub: HubAsync;
   private hubControl: HubControl;
   private color: string;
   private updateTimer: any;
@@ -54,13 +54,22 @@ export default class LegoBoost {
    * @param {BoostConfiguration} [configuration={}] Lego boost motor and control configuration
    * @returns {Promise}
    */
-  async connect(configuration: BoostConfiguration = {}): Promise<void> {
+  async connect(configuration: BoostConfiguration = {}): Promise<string | undefined> {
     try {
       this.configuration = configuration;
       const bluetooth = await BoostConnector.connect(this.handleGattDisconnect.bind(this));
       this.initHub(bluetooth, this.configuration);
-    } catch (e) {
-      console.log('Error from connect: ' + e);
+      return undefined;
+    } catch (e) {   
+      let errorMessage = 'Error from connect: ' + e;
+
+      if (!BoostConnector.isWebBluetoothSupported) {
+        const extra_error = "Your device doesn't support Web Bluetooth API. Try to turn on Experimental Platform Features from Chrome, by accessing the following link and turning it on: chrome://flags/#enable-experimental-web-platform-features. Unfortunately, this feature is not supported on iOS devices.";
+        errorMessage = extra_error;
+      }
+      
+      console.log(errorMessage);
+      return errorMessage;
     }
   }
 

@@ -1,7 +1,7 @@
-import { BoostConfiguration } from './hub/hubAsync';
+import { HubAsync, BoostConfiguration } from './hub/hubAsync';
 import { DeviceInfo, ControlData, RawData } from './types';
 export default class LegoBoost {
-    private hub;
+    hub: HubAsync;
     private hubControl;
     private color;
     private updateTimer;
@@ -23,7 +23,7 @@ export default class LegoBoost {
      * @param {BoostConfiguration} [configuration={}] Lego boost motor and control configuration
      * @returns {Promise}
      */
-    connect(configuration?: BoostConfiguration): Promise<void>;
+    connect(configuration?: BoostConfiguration): Promise<string | undefined>;
     private initHub;
     private handleGattDisconnect;
     /**
